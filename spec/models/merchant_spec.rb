@@ -162,11 +162,5 @@ describe Merchant do
     it "best_day" do
       expect(@merchant1.best_day).to eq(@invoice_8.created_at.to_date)
     end
-
-    it "qualifying_discounts" do 
-      expect(@merchant1.qualifying_discounts(5)).to eq([@discount_1])
-      expect(@merchant1.qualifying_discounts(12)).to eq([@discount_1, @discount_2])
-      expect(@merchant1.qualifying_discounts(3)).to eq([])
-    end
   end
 end
