@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Admin Invoices Index Page' do
+describe 'Admin Invoices Show Page' do
   before :each do
     @m1 = Merchant.create!(name: 'Merchant 1')
 

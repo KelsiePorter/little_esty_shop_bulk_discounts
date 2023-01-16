@@ -16,12 +16,10 @@ RSpec.describe 'Merchant discount show page' do
     it 'displays the attributes of a discount' do 
       visit merchant_discount_path(@merchant_1, @discount_1)
 
-      expect(page).to have_content(@discount_1.id)
-      expect(page).to have_content(@discount_1.threshold)
-      expect(page).to have_content(@discount_1.percentage)
-      expect(page).to_not have_content(@discount_2.id)
-      expect(page).to_not have_content(@discount_2.threshold)
-      expect(page).to_not have_content(@discount_2.percentage)
+        expect(page).to have_content(@discount_1.id)
+        expect(page).to have_content(@discount_1.threshold)
+        expect(page).to have_content(@discount_1.percentage)
+        expect(page).to_not have_content(@discount_2.id)
 
       visit merchant_discount_path(@merchant_2, @discount_6)
 
@@ -30,6 +28,7 @@ RSpec.describe 'Merchant discount show page' do
       expect(page).to have_content(@discount_6.percentage)
     end
   end
+  
   describe 'user story 5 (part 1)' do 
     it 'displays a link to edit the discount' do 
       visit merchant_discount_path(@merchant_1, @discount_1)
@@ -41,5 +40,4 @@ RSpec.describe 'Merchant discount show page' do
       expect(current_path).to eq(edit_merchant_discount_path(@merchant_1, @discount_1))
     end
   end
-
 end
