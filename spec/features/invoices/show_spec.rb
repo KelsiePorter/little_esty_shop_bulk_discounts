@@ -124,4 +124,33 @@ RSpec.describe 'invoices show' do
       expect(page).to have_content(invoice_1.total_discounted_revenue)
     end
   end
+  describe 'user story 7' do 
+    it 'displays a link next to each invoice item to the bulk discount that was applied (if any)' do 
+      merchant_1 = Merchant.create!(name: 'Hair Care')
+      item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: merchant_1.id, status: 1)
+      item_8 = Item.create!(name: "Butterfly Clip", description: "This holds up your hair but in a clip", unit_price: 5, merchant_id: merchant_1.id)
+      customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
+      invoice_1 = Invoice.create!(customer_id: customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
+      ii_1 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_1.id, quantity: 9, unit_price: 10, status: 2)
+      ii_11 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_8.id, quantity: 1, unit_price: 10, status: 1)
+      discount_1 = merchant_1.discounts.create!(threshold: 5, percentage: 20)
+      discount_2 = merchant_1.discounts.create!(threshold: 10, percentage: 50)
+      
+      visit merchant_invoice_path(merchant_1, invoice_1)
+
+      expect(page).to have_content("See Discount Applied")
+
+      within("#the-status-#{ii_1.id}") do 
+        expect(page).to have_link(discount_1.id)
+      end
+
+      within("#the-status-#{ii_11.id}") do 
+        expect(page).to have_content("None")
+      end   
+
+      click_link(discount_1.id)
+
+      expect(current_path).to eq(merchant_discount_path(merchant_1, discount_1))
+    end
+  end
 end

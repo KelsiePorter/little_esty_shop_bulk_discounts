@@ -36,6 +36,7 @@
         <th class="th1">Quantity</th>
         <th class="th1">Unit Price</th>
         <th class="th1">Status</th>
+        <th class="th1">See Discount Applied</th>
       </tr>
     </thead>
 
@@ -46,10 +47,20 @@
             <td style="text-align:center"><%= i.item.name %></td>
             <td style="text-align:center"><%= i.quantity %></td>
             <td style="text-align:center">$<%= i.unit_price %></td>
-            <td style="text-align:center"><%= form_with model: @invoice, url: merchant_invoice_path(@merchant, @invoice), method: :patch, local: true do |f| %>
-                                            <%= f.select :status, Invoice.statuses.keys, selected: "#{@invoice.status}" %>
-                                            <%= f.submit 'Update Invoice' %>
-                                          <% end %></td><br/>
+            <td style="text-align:center">
+              <%= form_with model: @invoice, url: merchant_invoice_path(@merchant, @invoice), method: :patch, local: true do |f| %>
+                <%= f.select :status, Invoice.statuses.keys, selected: "#{@invoice.status}" %>
+                <%= f.submit 'Update Invoice' %>
+              <% end %>
+            </td>
+            <br/>
+            <td style="text-align:center">
+              <% if i.qualifying_discount %>
+                <%= link_to i.qualifying_discount.id, "/merchant/#{@merchant.id}/discounts/#{i.qualifying_discount.id}"  %>
+              <% else %>
+                None
+              <% end %>
+            </td>
           </tr>
         </section>
       <% end %>
