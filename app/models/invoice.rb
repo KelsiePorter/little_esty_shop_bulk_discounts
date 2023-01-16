@@ -16,11 +16,17 @@ class Invoice < ApplicationRecord
     invoice_items.sum("unit_price * quantity")
   end
 
-  #returns the total revenue with discounts applied. If no discount
-  #is applied, the unit_price is applied and used
-  #This method calls on apply_applicable_discount! in invoice_item.rb
+  #returns the total discount amount (float). By summing all of the
+  #discounted amounts of each invoice item.
+  def total_discount 
+    invoice_items.select('invoice_items.*, sum(invoice_items.unit_price * invoice_items.quantity * (discounts.percentage)/100) AS calculated_discount')
+                 .joins(:discounts)
+                 .where('invoice_items.quantity >= discounts.threshold')
+                 .group(:id)
+                 .sum { |invoice_item| invoice_item.calculated_discount }
+  end
+
   def total_discounted_revenue
-    invoice_items.each {|invoice_item| invoice_item.apply_applicable_discount!}
-    invoice_items.sum("discounted_unit_price * quantity")
+    total_revenue - total_discount
   end
 end

@@ -59,16 +59,5 @@ RSpec.describe InvoiceItem, type: :model do
       expect(@ii_1.qualifying_discount).to eq(@discount_1)
       expect(@ii_11.qualifying_discount).to eq(nil)
     end
-    
-    it 'apply_applicable_discount!' do 
-      expect(@ii_1.discounted_unit_price).to be nil
-      expect(@ii_11.discounted_unit_price).to be nil
-
-      expect(@ii_1.apply_applicable_discount!).to be true
-      expect(@ii_11.apply_applicable_discount!).to be true
-
-      expect(@ii_1.discounted_unit_price).to eq(8.0)
-      expect(@ii_11.discounted_unit_price).to eq(10.0)
-    end
   end
 end
