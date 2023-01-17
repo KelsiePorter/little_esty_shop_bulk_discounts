@@ -101,7 +101,7 @@ RSpec.describe 'Merchant Discounts Index Page' do
   end
 
   describe 'user story 2 (part 1)' do 
-    it 'displays a liknk to create a new discount' do 
+    it 'displays a link to create a new discount' do 
       expect(page).to have_link("Create a new discount")
 
       click_link "Create a new discount"

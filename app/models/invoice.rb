@@ -16,8 +16,7 @@ class Invoice < ApplicationRecord
     invoice_items.sum("unit_price * quantity")
   end
 
-  #returns the total discount amount (float). By summing all of the
-  #discounted amounts of each invoice item.
+  #returns the total discount amount for all invoice items that meet the discount criteria. 
   def total_discount 
     invoice_items.select('invoice_items.*, sum(invoice_items.unit_price * invoice_items.quantity * (discounts.percentage)/100) AS calculated_discount')
                  .joins(:discounts)

@@ -24,6 +24,7 @@ class InvoiceItem < ApplicationRecord
   def qualifying_discount
     discounts.where("threshold <= ?", quantity)
              .order(percentage: :desc)
+             .limit(1)
              .first
   end
 end
