@@ -39,6 +39,7 @@
         <th class="th1">Quantity</th>
         <th class="th1">Unit Price</th>
         <th class="th1">Status</th>
+        <th class="th1">See Discount Applied</th>
       </tr>
     </thead>
 
@@ -49,6 +50,13 @@
           <td style="text-align:center"><%= i.quantity %></td>
           <td style="text-align:center">$<%= i.unit_price %></td>
           <td style="text-align:center"><%= i.status%></td><br/>
+          <td style="text-align:center">
+              <% if i.qualifying_discount %>
+                <%= link_to i.qualifying_discount.id, "/merchant/#{i.item.merchant.id}/discounts/#{i.qualifying_discount.id}"  %>
+              <% else %>
+                None
+              <% end %>
+            </td>
         </tr>
       <% end %>
     </tbody>
