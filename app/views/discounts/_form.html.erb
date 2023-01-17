@@ -1,0 +1,7 @@
+<%= form_with url: path, method: method, local: true do |f| %>
+  <%= f.label :threshold %>
+  <%= f.text_field :threshold, :value => "#{threshold}" %><br><br>
+  <%= f.label :percentage %>
+  <%= f.text_field :percentage, :value => "#{percentage}" %><br><br>
+  <%= f.submit button_text %>
+<% end %>
