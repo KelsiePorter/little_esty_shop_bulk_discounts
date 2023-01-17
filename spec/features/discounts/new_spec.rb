@@ -3,6 +3,17 @@ require 'rails_helper'
 RSpec.describe 'Create new discount' do 
   before :each do
     @merchant_1 = Merchant.create!(name: 'Hair Care')
+
+    WebMock.stub_request(:any, "https://date.nager.at/api/v3/NextPublicHolidays/US").
+      to_return(
+        body:
+          '[
+            {"date": "2023-01-16", "localName": "Martin Luther King, Jr. Day"},
+            {"date": "2023-02-20", "localName": "Presidents Day"},
+            {"date": "2023-04-07", "localName": "Good Friday"}
+          ]',
+        headers: {content_type: 'application/json'}
+      )
   end
   describe 'user story 2 (part 2)' do 
     it 'displays a form to create a new discount' do 

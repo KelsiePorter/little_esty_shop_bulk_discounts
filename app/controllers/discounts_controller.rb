@@ -2,6 +2,7 @@ class DiscountsController < ApplicationController
   before_action :find_merchant, only: [:index, :new, :create, :destroy, :show, :edit, :update]
   def index
     @discounts = @merchant.discounts
+    @upcoming_holidays = USHolidayService.new.get_next_public_holidays
   end
 
   def new
