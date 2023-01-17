@@ -27,6 +27,7 @@ class DiscountsController < ApplicationController
 
   def show
     @discount = Discount.find(params[:id])
+    @upcoming_holidays = USHolidayService.new.get_next_public_holidays
   end
 
   def edit 
