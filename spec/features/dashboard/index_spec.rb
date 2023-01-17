@@ -40,6 +40,17 @@ RSpec.describe 'merchant dashboard' do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 1, invoice_id: @invoice_7.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
+    WebMock.stub_request(:any, "https://date.nager.at/api/v3/NextPublicHolidays/US").
+      to_return(
+        body:
+          '[
+            {"date": "2023-01-16", "localName": "Martin Luther King, Jr. Day"},
+            {"date": "2023-02-20", "localName": "Presidents Day"},
+            {"date": "2023-04-07", "localName": "Good Friday"}
+          ]',
+        headers: {content_type: 'application/json'}
+      )
+
     visit merchant_dashboard_index_path(@merchant1)
   end
 

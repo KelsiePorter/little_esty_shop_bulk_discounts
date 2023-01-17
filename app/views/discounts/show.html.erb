@@ -1,14 +1,5 @@
 <h1>Merchant's Discount Show Page</h1>
 
-<h3>Upcoming US Holidays:</h3>
-<div class="upcoming-holidays">
-  <% @upcoming_holidays.each do |holiday| %>
-    <div id=<%="holiday-#{holiday.date}"%>>
-      <strong>Name: </strong><%= holiday.name %>
-      <strong>Date: </strong><%= holiday.date %>
-    </div>
-  <% end %>
-</div>
 
 <p>
   <strong>Discount ID: </strong><%= @discount.id %><br>

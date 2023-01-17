@@ -48,6 +48,17 @@ RSpec.describe 'Merchant Discounts Index Page' do
     @discount_5 = @merchant_1.discounts.create!(threshold: 50, percentage: 50)
     @discount_6 = @merchant_2.discounts.create!(threshold: 8, percentage: 65)
 
+    WebMock.stub_request(:any, "https://date.nager.at/api/v3/NextPublicHolidays/US").
+      to_return(
+        body:
+          '[
+            {"date": "2023-01-16", "localName": "Martin Luther King, Jr. Day"},
+            {"date": "2023-02-20", "localName": "Presidents Day"},
+            {"date": "2023-04-07", "localName": "Good Friday"}
+          ]',
+        headers: {content_type: 'application/json'}
+      )
+
     visit merchant_discounts_path(@merchant_1)
   end
 
@@ -128,6 +139,37 @@ RSpec.describe 'Merchant Discounts Index Page' do
 
       within(".discounts") do 
         expect(page).to_not have_css("#discount-#{@discount_5.id}")
+      end
+    end
+  end
+
+  describe 'user story 9' do 
+    it 'displays an upcoming holidays section. The section contains the name and date of the next three US holidays' do 
+      holiday_1 = Holiday.new(JSON.parse({date: "2023-01-16", localName: "Martin Luther King, Jr. Day"}.to_json))
+      holiday_2 = Holiday.new(JSON.parse({date: "2023-02-20", localName: "Presidents Day"}.to_json))
+      holiday_3 = Holiday.new(JSON.parse({date: "2023-04-07", localName: "Good Friday"}.to_json))
+
+      within(".upcoming-holidays") do 
+        expect(page).to have_content("Name: ", count: 3)
+        expect(page).to have_content("Date: ", count: 3)
+        expect(page).to have_css("#holiday-#{holiday_1.date}")
+        expect(page).to have_css("#holiday-#{holiday_2.date}")
+        expect(page).to have_css("#holiday-#{holiday_3.date}")
+      end
+
+      within("#holiday-#{holiday_1.date}") do 
+        expect(page).to have_content(holiday_1.name)
+        expect(page).to have_content(holiday_1.date)
+      end
+
+      within("#holiday-#{holiday_2.date}") do 
+        expect(page).to have_content(holiday_2.name)
+        expect(page).to have_content(holiday_2.date)
+      end
+
+      within("#holiday-#{holiday_3.date}") do 
+        expect(page).to have_content(holiday_3.name)
+        expect(page).to have_content(holiday_3.date)
       end
     end
   end

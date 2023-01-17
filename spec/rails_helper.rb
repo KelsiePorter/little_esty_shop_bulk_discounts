@@ -9,18 +9,8 @@ require File.expand_path('../config/environment', __dir__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
-# WebMock.disable_net_connect!(allow_localhost: true)
-WebMock.allow_net_connect!(net_http_connect_on_start: true)
-WebMock.stub_request(:any, "https://date.nager.at/api/v3/NextPublicHolidays/US").
-  to_return(
-    body:
-      '[
-        {"date": "2023-01-16", "localName": "Martin Luther King, Jr. Day"},
-        {"date": "2023-02-20", "localName": "Presidents Day"},
-        {"date": "2023-04-07", "localName": "Good Friday"}
-      ]',
-    headers: {content_type: 'application/json'}
-  )
+WebMock.disable_net_connect!(allow_localhost: true)
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
